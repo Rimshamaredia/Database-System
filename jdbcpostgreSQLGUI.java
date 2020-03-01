@@ -21,15 +21,19 @@ public class jdbcpostgreSQLGUI {
         System.exit(0);
      }//end try catch
      JOptionPane.showMessageDialog(null,"Opened database successfully");
+     String[] options = new String[] {"Show me top largest Football Stadiums", "I want to see total number of games played in my favorite stadium"};
+
+    int response = JOptionPane.showOptionDialog(null,"Select what you want to see?",null,JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,options,options[0]);
+
      String name = "";
      try{
      //create a statement object
        Statement stmt = conn.createStatement();
        //create an SQL statement
       
-      // String sqlStatement = "SELECT merged_team.\"Name\", COUNT(*) FROM merged_game JOIN merged_team ON merged_game.\"Visit Team Code\"=merged_team.\"Team Code\" GROUP BY merged_team.\"Name\" ORDER BY COUNT(*) DESC LIMIT 10;
+      if(response == 0){
        String sqlStatement="SELECT * FROM merged_stadium ORDER BY \"Capacity\" DESC LIMIT 10";
-
+       
       
        //send statement to DBMS
        ResultSet result = stmt.executeQuery(sqlStatement);
@@ -46,6 +50,28 @@ public class jdbcpostgreSQLGUI {
           System.out.println(name);
         }
        }
+      }else{
+
+
+       
+      String out = "";
+
+     
+      String sqlStatement =  "SELECT stats.\"Attendance\", game.\"Date\", merged_stadium.\"Name\" FROM merged_game_statistics AS stats JOIN merged_game AS game ON stats.\"Game Code\"=game.\"Game Code\" JOIN merged_stadium ON game.\"Stadium Code\"=merged_stadium.\"Stadium Code\" ORDER BY stats.\"Attendance\" DESC LIMIT 10";
+
+       // String sqlStatement = "SELECT COUNT(*) FROM merged_game JOIN merged_stadium ON merged_game.\"Stadium Code\"= merged_stadium.\"Stadium Code\" WHERE \"Name\" = "+ stadium_name+"";
+        ResultSet result = stmt.executeQuery(sqlStatement);
+        while (result.next()) {
+          // System.out.println("Stadium Code  Name  City\n");
+          while (result.next()) {
+              //name += result.getString("Home_Town") +"\n";
+              out+= result.getString("Attemdance") + " " + result.getString("Date") + " "+ result.getString("Name") + "\n";
+             //name += result.getString("") + " " + result.getString("count") + "\n";
+            System.out.println(out);
+          }
+         }
+      
+      }
    } catch (Exception e){
      JOptionPane.showMessageDialog(null,"Error accessing Database.");
    }
