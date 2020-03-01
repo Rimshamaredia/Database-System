@@ -13,6 +13,7 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -20,6 +21,7 @@ import javax.swing.SwingConstants;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Image;
 
 //import java.sql.DriverManager;
 /*
@@ -29,11 +31,18 @@ CSCE 315
  */
 public class jdbcpostgreSQLGUI implements ActionListener {
   public static void main(String args[]) {
+    //http://sandsduchon.org/duchon/Musings/a/macButton.html
+    try {
+      javax.swing.UIManager.setLookAndFeel( javax.swing.UIManager.getCrossPlatformLookAndFeelClassName() );
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
     dbSetupExample my = new dbSetupExample();
 
     JFrame mainWindow = new JFrame("DataBall FootBase");
     mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    mainWindow.setSize(750,200);
+    mainWindow.setSize(750,350);
 
     mainWindow.getContentPane().setBackground(new java.awt.Color(44, 68, 101));
 
@@ -56,8 +65,7 @@ public class jdbcpostgreSQLGUI implements ActionListener {
         e.printStackTrace();
         System.err.println(e.getClass().getName()+": "+e.getMessage());
         System.exit(0);
-     }//end try catch
-     //JOptionPane.showMessageDialog(null,"Opened database successfully");
+     }
     
     String[] options = new String[] {"Largest Football Stadiums", "10 Most Attended Games", "Mystery Query"};
 
@@ -68,6 +76,10 @@ public class jdbcpostgreSQLGUI implements ActionListener {
     mainWindow.add(querylist, BorderLayout.CENTER);
 
     JButton activateQuery = new JButton("GO!");
+    activateQuery.setBackground(new Color(133,154,188));
+    activateQuery.setOpaque(true);
+    //activateQuery.setBorderPainted(false);
+    activateQuery.setForeground(Color.WHITE);
     mainWindow.add(activateQuery, BorderLayout.EAST);
 
     int response = JOptionPane.showOptionDialog(null,"Select what you want to see?",null,JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,options,options[0]);
@@ -112,7 +124,14 @@ public class jdbcpostgreSQLGUI implements ActionListener {
     JOptionPane.showMessageDialog(null,"Error accessing Database.");
   }
 
-  //JOptionPane.showMessageDialog(null,name);
+  //http://www.nullpointer.at/2011/08/21/java-code-snippets-howto-resize-an-imageicon/#comment-11870
+  ImageIcon logo = new ImageIcon("final.png");
+  Image image = logo.getImage(); // transform it 
+  Image newimg = image.getScaledInstance(250, 200,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+  logo = new ImageIcon(newimg);  // transform it back
+  JLabel img = new JLabel();
+  img.setIcon(logo);
+  mainWindow.add(img, BorderLayout.SOUTH);
   mainWindow.setVisible(true);
 
   //closing the connection
