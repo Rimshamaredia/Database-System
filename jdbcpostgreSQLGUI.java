@@ -26,16 +26,23 @@ public class jdbcpostgreSQLGUI {
      //create a statement object
        Statement stmt = conn.createStatement();
        //create an SQL statement
-       String sqlStatement = "SELECT \"Name\" FROM merged_conference";
+      
+      // String sqlStatement = "SELECT merged_team.\"Name\", COUNT(*) FROM merged_game JOIN merged_team ON merged_game.\"Visit Team Code\"=merged_team.\"Team Code\" GROUP BY merged_team.\"Name\" ORDER BY COUNT(*) DESC LIMIT 10;
+       String sqlStatement="SELECT * FROM merged_stadium ORDER BY \"Capacity\" DESC LIMIT 10";
+
+      
        //send statement to DBMS
        ResultSet result = stmt.executeQuery(sqlStatement);
 
        //OUTPUT
-       JOptionPane.showMessageDialog(null,"Customer Last names from the Database.");
+       JOptionPane.showMessageDialog(null,"Lets look at the top 10 Largest Football Stadiums in the World! .");
        //System.out.println("______________________________________");
        while (result.next()) {
+        // System.out.println("Stadium Code  Name  City\n");
         while (result.next()) {
-            name += result.getString("Name") +"\n";
+            //name += result.getString("Home_Town") +"\n";
+            name+= result.getString("Stadium Code") + " " + result.getString("Name") + " "+ result.getString("City") + "\n";
+           //name += result.getString("") + " " + result.getString("count") + "\n";
           System.out.println(name);
         }
        }
