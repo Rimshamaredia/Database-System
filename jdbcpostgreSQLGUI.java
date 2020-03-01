@@ -21,7 +21,8 @@ public class jdbcpostgreSQLGUI {
         System.exit(0);
      }//end try catch
      JOptionPane.showMessageDialog(null,"Opened database successfully");
-     String[] options = new String[] {"Show me top largest Football Stadiums", "I want to see total number of games played in my favorite stadium"};
+    
+     String[] options = new String[] {"Show me top largest Football Stadiums", "I want to see top 10 most attended games"};
 
     int response = JOptionPane.showOptionDialog(null,"Select what you want to see?",null,JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,options,options[0]);
 
@@ -40,12 +41,13 @@ public class jdbcpostgreSQLGUI {
 
        //OUTPUT
        JOptionPane.showMessageDialog(null,"Lets look at the top 10 Largest Football Stadiums in the World! .");
+       name += "Stadium Code\t Name\t Capcacity\n\n";
        //System.out.println("______________________________________");
        while (result.next()) {
         // System.out.println("Stadium Code  Name  City\n");
         while (result.next()) {
             //name += result.getString("Home_Town") +"\n";
-            name+= result.getString("Stadium Code") + " " + result.getString("Name") + " "+ result.getString("City") + "\n";
+            name+= result.getString("Stadium Code") + " " + result.getString("Name") + " "+ result.getString("Capacity") + "\n";
            //name += result.getString("") + " " + result.getString("count") + "\n";
           System.out.println(name);
         }
@@ -54,7 +56,7 @@ public class jdbcpostgreSQLGUI {
 
 
        
-      String out = "";
+      
 
      
       String sqlStatement =  "SELECT stats.\"Attendance\", game.\"Date\", merged_stadium.\"Name\" FROM merged_game_statistics AS stats JOIN merged_game AS game ON stats.\"Game Code\"=game.\"Game Code\" JOIN merged_stadium ON game.\"Stadium Code\"=merged_stadium.\"Stadium Code\" ORDER BY stats.\"Attendance\" DESC LIMIT 10";
@@ -63,11 +65,12 @@ public class jdbcpostgreSQLGUI {
         ResultSet result = stmt.executeQuery(sqlStatement);
         while (result.next()) {
           // System.out.println("Stadium Code  Name  City\n");
+        
           while (result.next()) {
               //name += result.getString("Home_Town") +"\n";
-              out+= result.getString("Attemdance") + " " + result.getString("Date") + " "+ result.getString("Name") + "\n";
+              name+= result.getString("Attendance") + " " + result.getString("Date") + " "+ result.getString("Name") + "\n";
              //name += result.getString("") + " " + result.getString("count") + "\n";
-            System.out.println(out);
+            System.out.println(name);
           }
          }
       
