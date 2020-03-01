@@ -72,7 +72,7 @@ public class jdbcpostgreSQLGUI implements ActionListener {
        //create an SQL statement
       
       if(response == 0){
-       String sqlStatement="SELECT * FROM merged_stadium ORDER BY \"Capacity\" DESC LIMIT 10";
+      String sqlStatement="SELECT * FROM merged_stadium ORDER BY \"Capacity\" DESC LIMIT 10";
        
       
        //send statement to DBMS
