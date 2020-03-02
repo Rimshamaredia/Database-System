@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package testproject;
+//package testproject;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -15,10 +15,10 @@ import java.sql.Statement;
  * @author John Marrs
  */
 public class TestQuerier {
-    
+
     public ResultSet performQuery(){
         ResultSet finalResult = null;
-        
+
         //dbSetup hides my username and password
         TestDBSetupExample my = new TestDBSetupExample();
         //Building the connection
@@ -33,9 +33,9 @@ public class TestQuerier {
             System.exit(0);
         }//end try catch
         System.out.println("Opened database successfully");
-     
+
         String name = "";
-    
+
         try{
             //create a statement object
             Statement stmt = conn.createStatement();
@@ -45,14 +45,14 @@ public class TestQuerier {
             // LIMIT 10";
             // String sqlStatement = "SELECT \"Name\" FROM merged_conference";
             String sqlStatement = "SELECT * FROM merged_player";
-     
+
             //send statement to DBMS
             finalResult = stmt.executeQuery(sqlStatement);
         } catch(Exception e){
             e.printStackTrace();
         }
- 
+
         return finalResult;
     }
-    
+
 }

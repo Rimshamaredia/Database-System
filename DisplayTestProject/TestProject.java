@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package testproject;
+//package testproject;
 
 /**
  *
@@ -18,5 +18,5 @@ public class TestProject {
         // TODO code application logic here
         TestFrame frame = new TestFrame();
     }
-    
+
 }
