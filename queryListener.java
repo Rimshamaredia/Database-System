@@ -40,14 +40,8 @@ public class queryListener implements ActionListener{
 
   public void actionPerformed(ActionEvent e){
     if(e.getActionCommand() == "GO!"){
-
       jdbcpostgreSQLGUI.executeQuery((String)queryListDdn.getSelectedItem());
     }
-    /*
-    System.out.println(e.getActionCommand());
-    System.out.println(e.getModifiers());
-    System.out.println(e.paramString());
-    */
   }
 
 }

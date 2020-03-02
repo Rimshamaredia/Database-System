@@ -23,7 +23,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Image;
 
-//import java.sql.DriverManager;
 /*
 Robert lightfoot
 CSCE 315
@@ -35,17 +34,11 @@ public class jdbcpostgreSQLGUI {
   static ResultDisplayPanel table = new ResultDisplayPanel();
   
   public static void main(String args[]) {
-    //http://sandsduchon.org/duchon/Musings/a/macButton.html
-    try {
-      //javax.swing.UIManager.setLookAndFeel( javax.swing.UIManager.getCrossPlatformLookAndFeelClassName() );
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
-
     dbSetupExample my = new dbSetupExample();
 
     mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    mainWindow.setSize(750,350);
+    mainWindow.setResizable(false);
+    mainWindow.setSize(750,550);
 
     mainWindow.getContentPane().setBackground(new java.awt.Color(44, 68, 101));
 
@@ -73,50 +66,6 @@ public class jdbcpostgreSQLGUI {
     String options[] = {"Largest Football Stadiums", "10 Most Attended Games", "Mystery Query"};
     
     queryListener qL = new queryListener(mainWindow);
-    /*int response = JOptionPane.showOptionDialog(null,"Select what you want to see?",null,JOptionPane.YES_NO_OPTION,JOptionPane.PLAIN_MESSAGE,null,options,options[0]);
-
-     String name = "";
-     try{
-     //create a statement object
-       Statement stmt = conn.createStatement();
-       //create an SQL statement
-      
-      if(response == 0){
-      String sqlStatement="SELECT * FROM merged_stadium ORDER BY \"Capacity\" DESC LIMIT 10";
-       
-      
-       //send statement to DBMS
-       ResultSet result = stmt.executeQuery(sqlStatement);
-       ResultDisplayPanel table = new ResultDisplayPanel();
-       table.updateData(result);
-       mainWindow.add(table);
-
-       //OUTPUT
-       //JOptionPane.showMessageDialog(null,"Lets look at the top 10 Largest Football Stadiums in the World! .");
-       name += "Stadium Code\t Name\t Capcacity\n\n";
-
-       while (result.next()) {
-        while (result.next()) {
-            name+= result.getString("Stadium Code") + " " + result.getString("Name") + " "+ result.getString("Capacity") + "\n";
-        }
-       }
-      }
-      else{
-        String sqlStatement =  "SELECT stats.\"Attendance\", game.\"Date\", merged_stadium.\"Name\" FROM merged_game_statistics AS stats JOIN merged_game AS game ON stats.\"Game Code\"=game.\"Game Code\" JOIN merged_stadium ON game.\"Stadium Code\"=merged_stadium.\"Stadium Code\" ORDER BY stats.\"Attendance\" DESC LIMIT 10";
-        // String sqlStatement = "SELECT COUNT(*) FROM merged_game JOIN merged_stadium ON merged_game.\"Stadium Code\"= merged_stadium.\"Stadium Code\" WHERE \"Name\" = "+ stadium_name+"";
-        ResultSet result = stmt.executeQuery(sqlStatement);
-        while (result.next()) {
-        
-          while (result.next()) {
-              name+= result.getString("Attendance") + " " + result.getString("Date") + " "+ result.getString("Name") + "\n";
-          }
-        }
-      }
-  }
-   
-  catch (Exception e){
-    JOptionPane.showMessageDialog(null,"Error accessing Database.");
-  }*/
 
   //http://www.nullpointer.at/2011/08/21/java-code-snippets-howto-resize-an-imageicon/#comment-11870
   /*ImageIcon logo = new ImageIcon("final.png");
@@ -128,15 +77,6 @@ public class jdbcpostgreSQLGUI {
   mainWindow.add(img, BorderLayout.SOUTH);*/
   mainWindow.setVisible(true);
 
-  /*
-  //closing the connection
-    try {
-      conn.close();
-      //JOptionPane.showMessageDialog(null,"Connection Closed.");
-    } catch(Exception e) {
-      JOptionPane.showMessageDialog(null,"Connection NOT Closed.");
-    }//end try catch
-  */
   }//end main
 
   public static String executeQuery(String query){
@@ -151,7 +91,6 @@ public class jdbcpostgreSQLGUI {
       }
       else if(query.equals("10 Most Attended Games")){
         String sqlStatement =  "SELECT stats.\"Attendance\", game.\"Date\", merged_stadium.\"Name\" FROM merged_game_statistics AS stats JOIN merged_game AS game ON stats.\"Game Code\"=game.\"Game Code\" JOIN merged_stadium ON game.\"Stadium Code\"=merged_stadium.\"Stadium Code\" ORDER BY stats.\"Attendance\" DESC LIMIT 10";
-        // String sqlStatement = "SELECT COUNT(*) FROM merged_game JOIN merged_stadium ON merged_game.\"Stadium Code\"= merged_stadium.\"Stadium Code\" WHERE \"Name\" = "+ stadium_name+"";
         result = stmt.executeQuery(sqlStatement);
       }
       table.updateData(result);
@@ -160,7 +99,6 @@ public class jdbcpostgreSQLGUI {
     }
    
     catch (Exception e){
-      //JOptionPane.showMessageDialog(null,"Error accessing Database.");
       return "Error accessing Database.";
     }
     return name;

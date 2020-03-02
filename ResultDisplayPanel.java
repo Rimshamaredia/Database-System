@@ -38,13 +38,10 @@ public class ResultDisplayPanel extends JPanel{
                 model.addColumn(columnName);
             }
             
-            //System.out.println("About to add the rows...");
             while (result.next()){
-                //System.out.println("Iterated");
                 Object[] rowData = new Object[columnNames.size()];
                 for (int col = 0; col < columnNames.size(); col++){
                     rowData[col] = result.getString(columnNames.get(col));
-                    //System.out.println("Tried to add " + columnNames.get(col));
                 }
                 
                 model.addRow(rowData);
