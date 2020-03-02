@@ -37,7 +37,7 @@ public class jdbcpostgreSQLGUI {
   public static void main(String args[]) {
     //http://sandsduchon.org/duchon/Musings/a/macButton.html
     try {
-      javax.swing.UIManager.setLookAndFeel( javax.swing.UIManager.getCrossPlatformLookAndFeelClassName() );
+      //javax.swing.UIManager.setLookAndFeel( javax.swing.UIManager.getCrossPlatformLookAndFeelClassName() );
     } catch (Exception e) {
       e.printStackTrace();
     }
