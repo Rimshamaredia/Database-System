@@ -35,6 +35,7 @@ public class jdbcpostgreSQLGUI {
   static ResultDisplayPanel table = new ResultDisplayPanel();
   static String csvContents;
   static ResultSet result;
+  static String lastQuery;
 
   public static void main(String args[]) {
     dbSetupExample my = new dbSetupExample();
@@ -129,6 +130,7 @@ public class jdbcpostgreSQLGUI {
 
   public static String executeQuery(String query){
     String name = "";
+    
     try{
       Statement stmt = conn.createStatement();
 
@@ -141,9 +143,9 @@ public class jdbcpostgreSQLGUI {
         result = stmt.executeQuery(sqlStatement);
       }
       csvContents = table.updateData(result);
-      System.out.println("Contents:\n" + csvContents);
       mainWindow.add(table, BorderLayout.SOUTH);
       mainWindow.validate();
+      lastQuery = query;
     }
    
     catch (Exception e){
@@ -155,24 +157,9 @@ public class jdbcpostgreSQLGUI {
   
   public static boolean executeSave(){
     try{
-      FileWriter out = new FileWriter("tmp.csv");
+      FileWriter out = new FileWriter(lastQuery.replaceAll(" ", "_") + ".csv");
       out.write(csvContents);
-      System.out.println(csvContents);
       out.close();
-      /*
-      System.out.println("a");
-      while(printRes.next()){
-        for(int i = 0; i < printRes.getMetaData().getColumnCount(); i++){
-          System.out.println(i);
-	  if(i == 0)
-	    out.write(printRes.getString(i));
-	  else
-	    out.write("," + printRes.getString(i));
-	}
-	out.write("\n");
-      }
-      out.close();
-      */
     }
     catch(Exception e){
       System.out.println(e);

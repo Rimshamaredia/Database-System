@@ -52,7 +52,6 @@ public class ResultDisplayPanel extends JPanel{
 		  output += columnName;
 		}
             }
-	    output += "\n";
 
             //System.out.println("About to add the rows...");
             while (result.next()){
@@ -71,10 +70,10 @@ public class ResultDisplayPanel extends JPanel{
 
                 model.addRow(rowData);
             }
+	    output += "\n";
         } catch(Exception e){
             e.printStackTrace();
         }
-	System.out.println(output);
         scrollPane = new JScrollPane(table);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
