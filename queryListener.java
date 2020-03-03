@@ -11,7 +11,7 @@ public class queryListener implements ActionListener{
   JComboBox queryListDdn;
   JButton runQueryBtn;
   JButton saveBtn;
-  String options[] = {"Largest Football Stadiums", "10 Most Attended Games", "Mystery Query"};
+  String options[] = {"Largest Football Stadiums", "10 Worst Kickoffs", "10 Most Attended Games"};
   JFrame mainWindow;
   public queryListener(JFrame main){
     mainWindow = main;

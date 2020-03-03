@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-//package testproject;
 import java.awt.GridLayout;
 import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
-//import DisplayTestProject.UneditableTableModel;
 
 public class ResultDisplayPanel extends JPanel{
     JTable table;
@@ -53,10 +46,8 @@ public class ResultDisplayPanel extends JPanel{
 		}
             }
 
-            //System.out.println("About to add the rows...");
             while (result.next()){
 		output += "\n";
-                //System.out.println("Iterated");
                 Object[] rowData = new Object[columnNames.size()];
                 for (int col = 0; col < columnNames.size(); col++){
                     rowData[col] = result.getString(columnNames.get(col));
@@ -65,7 +56,6 @@ public class ResultDisplayPanel extends JPanel{
 		    }else{
 		      output += rowData[col];
 		    }
-                    //System.out.println("Tried to add " + columnNames.get(col));
                 }
 
                 model.addRow(rowData);
