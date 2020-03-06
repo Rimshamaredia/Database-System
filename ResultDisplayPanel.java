@@ -24,14 +24,14 @@ public class ResultDisplayPanel extends JPanel{
 
         table = new JTable(model);
         table.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
-	output = "";
+	      output = "";
 
         if (result == null){
             JLabel noData = new JLabel("No result received...");
             scrollPane = new JScrollPane(noData);
             noData.setHorizontalAlignment(JLabel.CENTER);
             this.add(scrollPane);
-	    output = "No data\n";
+	          output = "No data\n";
             return output;
         }
         try {
@@ -39,36 +39,37 @@ public class ResultDisplayPanel extends JPanel{
                 String columnName = result.getMetaData().getColumnName(i);
                 columnNames.add(columnName);
                 model.addColumn(columnName);
-		if(i != 1){
-		  output += "," + columnName;
-		}else{
-		  output += columnName;
-		}
+                if(i != 1){
+                  output += "," + columnName;
+                }else{
+                  output += columnName;
+                }
             }
 
             while (result.next()){
-		output += "\n";
+		            output += "\n";
                 Object[] rowData = new Object[columnNames.size()];
                 for (int col = 0; col < columnNames.size(); col++){
                     rowData[col] = result.getString(columnNames.get(col));
-		    if(col != 0){
-		      output += "," + rowData[col];
-		    }else{
-		      output += rowData[col];
-		    }
+                    if(col != 0){
+                      output += "," + rowData[col];
+                    }else{
+                      output += rowData[col];
+                    }
                 }
 
                 model.addRow(rowData);
             }
-	    output += "\n";
-        } catch(Exception e){
+	          output += "\n";
+        } 
+        catch(Exception e){
             e.printStackTrace();
         }
+
         scrollPane = new JScrollPane(table);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         this.add(scrollPane);
-	return output;
-    }
-
+	    return output;
+  }
 }
