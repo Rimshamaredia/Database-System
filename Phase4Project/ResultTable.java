@@ -151,7 +151,7 @@ public class ResultTable {
         String value = "";
         if (hasFieldNames){
             for (int i = 0; i < fieldNames.size(); i++){
-                value += fieldNames.get(i);
+                value += (fieldNames.keySet().toArray()[i]);
                 if (i < fieldNames.size() - 1){
                     value += ", ";
                 }else {
