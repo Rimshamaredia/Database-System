@@ -57,6 +57,12 @@ public class ResultTable {
         return numColumns;
     }
     
+    public ArrayList<String> getFieldNames(){
+        ArrayList<String> keys = null;
+        keys = new ArrayList<String>(fieldNames.keySet());
+        return keys;
+    }
+    
     public String getString(int row, int col) throws IndexOutOfBoundsException{
         if ((row < 0 || row > numRows) || (col < 0 || col > numColumns)){
             throw new IndexOutOfBoundsException();
@@ -151,7 +157,7 @@ public class ResultTable {
         String value = "";
         if (hasFieldNames){
             for (int i = 0; i < fieldNames.size(); i++){
-                value += (fieldNames.keySet().toArray()[i]);
+                value += this.getFieldNames().get(i);
                 if (i < fieldNames.size() - 1){
                     value += ", ";
                 }else {
