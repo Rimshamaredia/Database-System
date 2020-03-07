@@ -3,6 +3,12 @@ import java.io.*;
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.ImageIcon;
+import java.awt.Image;
+import java.awt.event.KeyEvent;
+
 import java.awt.BorderLayout;
 
 /*
@@ -13,10 +19,13 @@ CSCE 315
 public class jdbcpostgreSQLGUI {
   static Connection conn;
   static JFrame mainWindow = new JFrame("DataBall FootBase");
+  static JTabbedPane mainPane = new JTabbedPane();
   static ResultDisplayPanel table = new ResultDisplayPanel();
   static String csvContents;
   static ResultSet result;
   static String lastQuery;
+  static PhaseThree ph = new PhaseThree();
+  static QueryTwo second = new QueryTwo();
 
   public static void main(String args[]) {
     dbSetupExample my = new dbSetupExample();
@@ -26,12 +35,6 @@ public class jdbcpostgreSQLGUI {
     mainWindow.setSize(750,550);
 
     mainWindow.getContentPane().setBackground(new java.awt.Color(44, 68, 101));
-
-    JLabel title = new JLabel("<html><h1 style=\"font-weight: 500;\">DataBall FootBase</h1></html>");
-    title.setHorizontalAlignment(JLabel.CENTER);
-    title.setForeground(Color.white);
-    mainWindow.add(title, BorderLayout.PAGE_START);
-    
 
     //Building the connection
      conn = null;
@@ -48,17 +51,27 @@ public class jdbcpostgreSQLGUI {
         System.exit(0);
      }
     
-    queryListener qL = new queryListener(mainWindow);
-    saveListener sL = new saveListener(mainWindow);
+    //ueryListener qL = new queryListener(mainWindow);
+    //saveListener sL = new saveListener(mainWindow);
 
   //http://www.nullpointer.at/2011/08/21/java-code-snippets-howto-resize-an-imageicon/#comment-11870
-  /*ImageIcon logo = new ImageIcon("final.png");
+  ImageIcon logo = new ImageIcon("final.png");
   Image image = logo.getImage(); // transform it 
   Image newimg = image.getScaledInstance(250, 200,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
   logo = new ImageIcon(newimg);  // transform it back
   JLabel img = new JLabel();
   img.setIcon(logo);
-  mainWindow.add(img, BorderLayout.SOUTH);*/
+  //mainWindow.add(img, BorderLayout.SOUTH);
+
+  //Adding tabs for each query
+  mainPane.addTab("Simple Queries", logo, ph.phase3, "Phase 3 Stuff");
+  mainPane.setMnemonicAt(0, KeyEvent.VK_1);
+
+  mainPane.addTab("Q2", logo, second.q2, "query two Stuff");
+  mainPane.setMnemonicAt(1, KeyEvent.VK_2);
+
+  mainWindow.add(mainPane);
+
   mainWindow.setVisible(true);
 
   }//end main
@@ -81,8 +94,8 @@ public class jdbcpostgreSQLGUI {
       }
       result = stmt.executeQuery(sqlStatement);
       csvContents = table.updateData(result);
-      mainWindow.add(table, BorderLayout.SOUTH);
-      mainWindow.validate();
+      ph.phase3.add(jdbcpostgreSQLGUI.table);
+      ph.phase3.validate();
       lastQuery = query;
     }
    

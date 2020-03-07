@@ -9,10 +9,10 @@ import javax.swing.*;
 
 public class saveListener implements ActionListener{
   JButton saveBtn;
-  JFrame mainWindow;
+  JPanel wind;
 
-  public saveListener(JFrame main){
-    mainWindow = main;
+  public saveListener(JPanel main){
+    wind = main;
     saveBtn = new JButton("SAVE");
 
     saveBtn.setBackground(new Color(133,154,188));
@@ -22,7 +22,7 @@ public class saveListener implements ActionListener{
 
     saveBtn.addActionListener(this);
 
-    mainWindow.add(saveBtn, BorderLayout.SOUTH);
+    wind.add(saveBtn, BorderLayout.SOUTH);
   }
 
   public void actionPerformed(ActionEvent e){
