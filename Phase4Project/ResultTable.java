@@ -1,10 +1,10 @@
 
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 public class ResultTable {
-    private HashMap<String, Integer> fieldNames;
+    private LinkedHashMap<String, Integer> fieldNames;
     private ArrayList<ArrayList<String>> dataTable;
     private boolean hasFieldNames;
     private Integer numRows;
@@ -16,7 +16,7 @@ public class ResultTable {
     
     // This constructor will create a ResultTable object reflecting a ResultSet object
     public ResultTable(ResultSet rs){
-        fieldNames = new HashMap<String, Integer>();
+        fieldNames = new LinkedHashMap<String, Integer>();
         dataTable = new ArrayList<ArrayList<String>>();
         hasFieldNames = true;
         try {
@@ -40,10 +40,11 @@ public class ResultTable {
     }
     
     public ResultTable(ArrayList<String> _fieldNames){
-        fieldNames = new HashMap<String, Integer>();
+        fieldNames = new LinkedHashMap<String, Integer>();
         for (int i = 0; i < _fieldNames.size(); i++){
             fieldNames.put(_fieldNames.get(i), i);
         }
+        dataTable = new ArrayList<ArrayList<String>>();
         numColumns = _fieldNames.size();
         numRows = 0;
         hasFieldNames = true;
@@ -58,9 +59,18 @@ public class ResultTable {
     }
     
     public ArrayList<String> getFieldNames(){
-        ArrayList<String> keys = null;
-        keys = new ArrayList<String>(fieldNames.keySet());
-        return keys;
+        // BUG: Need to fix order issues
+        // TODO: Fix the order bug.
+        ArrayList<String> originalKeys = null;
+        originalKeys = new ArrayList<String>(fieldNames.keySet());
+        
+        ArrayList<String> orderedKeys = new ArrayList<String>();
+        
+        // this code should sort the key names properly
+        for (int col = 0; col < originalKeys.size(); col++){
+            orderedKeys.add(originalKeys.get(this.getFieldIndex(originalKeys.get(col))));
+        }
+        return orderedKeys;
     }
     
     public String getString(int row, int col) throws IndexOutOfBoundsException{
@@ -70,6 +80,25 @@ public class ResultTable {
         
         String value = null;
         value = dataTable.get(row).get(col);
+        return value;
+    }
+    
+    public Boolean getBoolean(int row, int col) throws IndexOutOfBoundsException{
+        if ((row < 0 || row > numRows) || (col < 0 || col > numColumns)){
+            throw new IndexOutOfBoundsException();
+        }
+        Boolean value = null;
+        String inputString = dataTable.get(row).get(col);
+        if (inputString.equals("1") || inputString.equals("0")){
+            if (inputString.equals("1")){
+                value = true;
+            }else {
+                value = false;
+            }
+            return value;
+        } else if (inputString.equalsIgnoreCase("true") || inputString.equalsIgnoreCase("false")){
+           value = Boolean.parseBoolean(dataTable.get(row).get(col));
+        }
         return value;
     }
     
@@ -84,16 +113,6 @@ public class ResultTable {
         return value;
     }
     
-    public Date getDate(int row, int col) throws IndexOutOfBoundsException{
-        if ((row < 0 || row > numRows) || (col < 0 || col > numColumns)){
-            throw new IndexOutOfBoundsException();
-        }
-        
-        Date value = null;
-        
-        return value;
-    }
-    
     public Double getDouble(int row, int col) throws IndexOutOfBoundsException{
         if ((row < 0 || row > numRows) || (col < 0 || col > numColumns)){
             throw new IndexOutOfBoundsException();
@@ -103,6 +122,13 @@ public class ResultTable {
         String tempValue = dataTable.get(row).get(col);
         value = Double.parseDouble(tempValue);
         return value;
+    }
+    
+    public void setBoolean(int row, int col, Boolean value) throws IndexOutOfBoundsException{
+        if ((row < 0 || row > numRows) || (col < 0 || col > numColumns)){
+            throw new IndexOutOfBoundsException();
+        }
+        dataTable.get(row).set(col, value.toString());
     }
     
     public void setInteger(int row, int col, Integer value)throws IndexOutOfBoundsException{
@@ -126,13 +152,6 @@ public class ResultTable {
         dataTable.get(row).set(col, value.toString());
     }
     
-    public void setDate(int row, int col, Date value)throws IndexOutOfBoundsException{
-        if ((row < 0 || row > numRows) || (col < 0 || col > numColumns)){
-            throw new IndexOutOfBoundsException();
-        }
-        dataTable.get(row).set(col, value.toString());
-    }
-    
     // Creates a new row for the data. The method returns the index of the new row. 
     public Integer addRow(){
         ArrayList<String> newRow = new ArrayList<String>(numColumns);
@@ -144,6 +163,7 @@ public class ResultTable {
     
     public void addRow(ArrayList<String> rowData){
         dataTable.add(rowData);
+        System.out.println(dataTable.size());
         numRows = dataTable.size();
     }
     
