@@ -8,13 +8,13 @@ public class DatabaseManager {
  
     }
     
-    public ResultTable performQuery(String query){
+    public ResultTable performQuery(String query) {
         ResultTable response = null;
         try {
             Statement stmt = conn.createStatement();
             response = new ResultTable(stmt.executeQuery(query));
         } catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return response;
     }
