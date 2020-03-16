@@ -4,9 +4,13 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 
 
-public class MainApplication extends JFrame {
+public class MainApplication extends JFrame implements WindowListener{
+    public static DatabaseManager dbManager = new DatabaseManager();
+
     PanelQ1 q1Panel;
     PanelQ3 q3Panel;
     PanelQ4 q4Panel;
@@ -32,6 +36,10 @@ public class MainApplication extends JFrame {
     }
     
     public MainApplication() {
+        if (!this.startDatabaseManager()){
+            return;
+        }
+
         this.setTitle("CSCE 315-900 Phase 4 Application");
         this.setDefaultCloseOperation((JFrame.EXIT_ON_CLOSE));
         this.setSize(720, 480);
@@ -90,6 +98,8 @@ public class MainApplication extends JFrame {
     }
     
     private void addListeners(){
+        this.addWindowListener(this);
+
         saveAs.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 saveAsHandler();
@@ -158,5 +168,46 @@ public class MainApplication extends JFrame {
         message += "Team Members: John Marrs, Michaela Matocha,\nNathan Mandell, Rimsha Maredia";
         
         JOptionPane.showMessageDialog(this, message);
+    }
+
+    private boolean startDatabaseManager(){
+        boolean success = false;
+
+        try {
+            this.dbManager.connect();
+            success = true;
+        } catch (Exception e){
+            e.printStackTrace();
+
+        }
+        return success;
+    }
+
+    public void windowClosed(WindowEvent ev){
+    }
+
+
+    public void windowOpened(WindowEvent ev) {
+
+    }
+    public void windowClosing(WindowEvent ev) {
+        try {
+            this.dbManager.closeConnection();
+            System.out.println("Connection closed");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    public void windowIconified(WindowEvent ev) {
+
+    }
+    public void windowDeiconified(WindowEvent ev) {
+
+    }
+    public void windowActivated(WindowEvent ev) {
+
+    }
+    public void windowDeactivated(WindowEvent ev) {
+
     }
 }

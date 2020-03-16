@@ -56,17 +56,12 @@ public class EditorPanelSQL extends JPanel implements Savable{
                 String query = inputArea.getText();
                 ResultTable resultTable = null;
                 
-                try {
-                    if (dbManager.connect()){
-                        resultTable = dbManager.performQuery(query);
-                        dbManager.closeConnection();
-                        //System.out.println(resultTable.toString());
-                    }else {
-                        System.out.println("Connection to database failed to establish");
-                    }
-                }catch (Exception exception){
-                    resultTable = null;
-                } 
+      
+             
+                resultTable = MainApplication.dbManager.performQuery(query);
+                //System.out.println(resultTable.toString());
+             
+            
                 resultDisplayPanel.updateData(resultTable);
                 refreshPanel();
             }
