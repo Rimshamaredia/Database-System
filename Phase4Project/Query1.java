@@ -36,20 +36,31 @@ public class Query1 {
                 ResultSet losing_teams = stmt.executeQuery(
                         "SELECT game_results_final.\"losing_team_code\", game_results_final.\"game_code\" FROM game_results_final WHERE game_results_final.\"winning_team_code\" ="
                                 + team_code + ";");
+               
                 while(losing_teams.next()) {
                     Integer losing_team = losing_teams.getInt(1);
-                  
+                    Long game_code = losing_teams.getLong("game_code");
+                   
+                   
+                    
                     if (losing_team.equals(losing_code)) {
                         for(int i = 0; i < new_node.size(); i++) {
-                            ResultSet team_name = stmt.executeQuery("SELECT merged_team.\"Name\" FROM merged_team WHERE merged_team.\"Team Code\" = "+ new_node.poll()+"; ");
-                           team_name.next();
-                            System.out.print(team_name.getString(1) + "->");
-                            
+                          
+                        
+                            ResultSet team_name = stmt.executeQuery("SELECT merged_team.\"Name\"  FROM merged_team WHERE merged_team.\"Team Code\" = "+ new_node.poll()+"; ");
+                           
+                            team_name.next();
+                           ResultSet team_date = stmt.executeQuery("SELECT 'Game_Dates.\"Date\"' FROM \"Game_Dates\" WHERE 'Game_Dates.\"Game Code\"' ="+ game_code+ ";");
+                            //System.out.print(team_name.getString(1) + "in" + team_date.getString("Date")+"won against"+"->");
+                            System.out.print(team_name.getString(1)+"->");
 
                         }
-                        ResultSet losing = stmt.executeQuery("SELECT merged_team.\"Name\" FROM merged_team WHERE merged_team.\"Team Code\" = "+ losing_team+"; ");
+                        ResultSet losing = stmt.executeQuery("SELECT merged_team.\"Name\"  FROM merged_team WHERE merged_team.\"Team Code\" = "+ losing_team+"; ");
+                        //ResultSet team_date = stmt.executeQuery("SELECT merged_game.\"Date\" FROM merged_game WHERE merged_game.\"Visit Team Code\"="+ away_team +"AND merged_game.\"Home Team Code\"="+ home_team + ";");
+                       
                         losing.next();
-                        System.out.print(losing.getString(1) + "\n");
+                        
+                        System.out.print(losing.getString(1) +"\n");
                         return;
                     }
                     if(!visited.contains(losing_team))  {
@@ -73,7 +84,7 @@ public class Query1 {
        System.out.println("Finished attempting connecting to database");
        Statement stmt = conn.createStatement();
        String winning = "Texas A&M";
-       String losing = "Marshall";
+       String losing = "Auburn";
        // get the winning team code from name
        ResultSet winning_code_rt = stmt.executeQuery(
                "SELECT merged_team.\"Team Code\" FROM merged_team WHERE merged_team.\"Name\"= '" + winning + "' ;");
@@ -85,7 +96,7 @@ public class Query1 {
     losing_code_rt.next();
        Integer losing_code = losing_code_rt.getInt(1);
      
-       System.out.println(winning_code);
+     
 
        bfs(winning_code, losing_code, conn);
         //find if team has ever won against it
