@@ -40,7 +40,7 @@ public class Query1 {
                 while(losing_teams.next()) {
                     Integer losing_team = losing_teams.getInt(1);
                     Long game_code = losing_teams.getLong("game_code");
-                   
+                    System.out.println(game_code);
                    
                     
                     if (losing_team.equals(losing_code)) {
@@ -76,9 +76,11 @@ public class Query1 {
     }
 
     public static void main(String[] args) throws SQLException {
+      try {
        Stack<Integer> st = new Stack<Integer>();
 
        System.out.println("Connecting to the database...");
+       Class.forName("org.postgresql.Driver");
        Connection conn = DriverManager.getConnection("jdbc:postgresql://csce-315-db.engr.tamu.edu/databallfootbase",
        LoginInfoDB.USERNAME, LoginInfoDB.PASSWORD);
        System.out.println("Finished attempting connecting to database");
@@ -103,5 +105,8 @@ public class Query1 {
        
     
        conn.close();
+     }catch (Exception e){
+      e.printStackTrace();
+     }
     }
 }
