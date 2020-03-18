@@ -13,6 +13,7 @@ import java.util.Queue;
 public class Query1 {
     public static void bfs(Integer winning_code, Integer losing_code, Connection c) throws SQLException {
         Statement stmt = c.createStatement();
+        
         ResultSet is_winning = stmt.executeQuery(
                 "SELECT game_results_final.\"winning_team_code\", game_results_final.\"losing_team_code\", game_results_final.\"game_code\" FROM game_results_final WHERE game_results_final.\"winning_team_code\" = "
                         + winning_code + "AND game_results_final.\"losing_team_code\" = " + losing_code + ";");
@@ -40,7 +41,8 @@ public class Query1 {
                 while(losing_teams.next()) {
                     Integer losing_team = losing_teams.getInt(1);
                     Long game_code = losing_teams.getLong("game_code");
-                    System.out.println(game_code);
+                
+                   // Integer game_code = (Integer)game_code;
                    
                     
                     if (losing_team.equals(losing_code)) {
@@ -48,11 +50,12 @@ public class Query1 {
                           
                         
                             ResultSet team_name = stmt.executeQuery("SELECT merged_team.\"Name\"  FROM merged_team WHERE merged_team.\"Team Code\" = "+ new_node.poll()+"; ");
-                           
                             team_name.next();
-                           ResultSet team_date = stmt.executeQuery("SELECT 'Game_Dates.\"Date\"' FROM \"Game_Dates\" WHERE 'Game_Dates.\"Game Code\"' ="+ game_code+ ";");
-                            //System.out.print(team_name.getString(1) + "in" + team_date.getString("Date")+"won against"+"->");
-                            System.out.print(team_name.getString(1)+"->");
+                            System.out.print(team_name.getString(1)+" in ");
+                            ResultSet team_date = stmt.executeQuery("SELECT merged_game.\"Game Code\" ,merged_game.\"Date\" FROM merged_game JOIN game_results_final ON game_results_final.game_code= merged_game.\"Game Code\" AND game_results_final.game_code = "+ game_code+ ";");
+                            team_date.next();
+                            System.out.print(team_date.getString("Date")+ " won against->");
+                           
 
                         }
                         ResultSet losing = stmt.executeQuery("SELECT merged_team.\"Name\"  FROM merged_team WHERE merged_team.\"Team Code\" = "+ losing_team+"; ");
@@ -103,10 +106,11 @@ public class Query1 {
        bfs(winning_code, losing_code, conn);
         //find if team has ever won against it
        
-    
-       conn.close();
+    conn.close();
+      
      }catch (Exception e){
       e.printStackTrace();
      }
+
     }
 }
