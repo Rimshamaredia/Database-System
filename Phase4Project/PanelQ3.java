@@ -12,7 +12,7 @@ import java.awt.Color;
 
 public class PanelQ3 extends JPanel implements Savable {
 
-    JComboBox teams;
+    AutoCompleteBox teams;
     JButton runBtn;
     JLabel question;
     JLabel response;
@@ -32,7 +32,7 @@ public class PanelQ3 extends JPanel implements Savable {
         {
             teamStrings[i] = teamNames.getString(i, 0);
         }
-        teams = new JComboBox(teamStrings);
+        teams = new AutoCompleteBox(teamStrings);
         runBtn = new JButton("GO!");
 
         this.addListeners();
@@ -80,7 +80,7 @@ public class PanelQ3 extends JPanel implements Savable {
 
                     if (responseString != null){
                         answerString = "The team with the most rushing yards against " + questionTeam + " is " + responseString + ".";
-                        response.setForeground(Color.GREEN);
+                        response.setForeground(Color.decode("#2e994a"));
 
                     }else {
                         answerString = "The team with the most rushing yards against " + questionTeam + " could not be determined.";
