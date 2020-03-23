@@ -65,9 +65,6 @@ public class MainApplication extends JFrame implements WindowListener{
         // Code for initializing the tabbed pane
         tabbedPane = new JTabbedPane();
         
-        
-        tabbedPane.add(new JLabel("test1"), "Test 1");
-        
         q1Panel = new PanelQ1();
         tabbedPane.add(q1Panel, "Question 1");
         

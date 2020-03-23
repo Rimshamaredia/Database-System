@@ -1,4 +1,6 @@
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,14 +23,15 @@ public class PanelQ5 extends JPanel implements Savable {
     AutoCompleteBox teams2;
     AutoCompleteBox stadiums;
     JButton runBtn;
-    JLabel question;
+    JTextArea question;
     JLabel response;
     String saveString = "No results to display";
 
     public PanelQ5(){
         System.out.println("Connected to database!");
 
-        question = new JLabel("Given 2 teams and a stadium, return how desirable it would be to advertise during this game on a scale from 0 to 100.");
+        question = new JTextArea("Given 2 teams and a stadium, return how desirable it would be to advertise during this game on a scale\nfrom 0 to 100.");
+        question.setEditable(false);
         response = new JLabel("Run a query to get a response...");
         response.setForeground(Color.BLUE);
 

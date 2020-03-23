@@ -24,7 +24,7 @@ public class PanelQ1 extends JPanel implements Savable {
     String saveString = "No results to display";
 
     public PanelQ1(){
-        System.out.println("Connected to database!");
+        //System.out.println("Connected to database!");
 
         question = new JLabel("Given 2 teams, create a victory chain.");
         response = new JLabel("Run a query to get a response...");

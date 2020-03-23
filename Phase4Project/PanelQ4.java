@@ -1,7 +1,3 @@
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
@@ -14,14 +10,15 @@ public class PanelQ4 extends JPanel implements Savable {
     AutoCompleteBox teams;
     JButton runBtn;
     JLabel question;
-    JLabel response;
+    JTextArea response;
     String saveString = "No results to display";
   
     public PanelQ4(){
         System.out.println("Connected to database!");
 
         question = new JLabel("Given a team, determine its home-field advantage.");
-        response = new JLabel("Run a query to get a response...");
+        response = new JTextArea("Run a query to get a response...");
+        response.setEditable(false);
         response.setForeground(Color.BLUE);
 
         String quer = "SELECT \"Name\" FROM merged_team";
@@ -72,13 +69,13 @@ public class PanelQ4 extends JPanel implements Savable {
                     if (teamElos.size() != 0){
 			int homeElo = teamElos.get(0);
 			int awayElo = teamElos.get(1);
-			answerString = String.format("%s is %d Elo points better at home than away.\n This means that %s has a %.2f%% chance of beating an average team at a neutral site, while they have a %.2f%% chance of beating an average team at home.", questionTeam,
+			answerString = String.format("%s is %d Elo points better at home than away.\nThis means that %s has a %.2f%% chance of beating an average team at a neutral site,\nwhile they have a %.2f%% chance of beating an average team at home.", questionTeam,
 			    GenerateElo.homeBonus + homeElo - awayElo, questionTeam, GenerateElo.eloExpectation(awayElo, 1500)*100,
 			    GenerateElo.eloExpectation(homeElo + GenerateElo.homeBonus, 1500)*100);
                         response.setForeground(Color.decode("#2e994a"));
 
                     }else {
-			answerString = "The home field advantage for" + questionTeam + "could not be computed.";
+			answerString = "The home field advantage for " + questionTeam + " could not be computed.";
                         response.setForeground(Color.RED);
                     }
                     saveString = answerString;

@@ -1,13 +1,9 @@
-import javax.swing.JComboBox;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import java.sql.ResultSet;
 import java.util.Stack;
-import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
 import java.awt.Color;
 
 public class PanelQ3 extends JPanel implements Savable {
