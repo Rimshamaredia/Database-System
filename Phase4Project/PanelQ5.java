@@ -77,12 +77,12 @@ public class PanelQ5 extends JPanel implements Savable {
                     String answerString = "";
                     responseString = q5Function(questionTeam1, questionTeam2, questionStadium);
 
-                    if (responseString != "No teams found."){
+                    if (responseString != "Something went wrong."){
                         answerString = responseString;
                         response.setForeground(Color.decode("#2e994a"));
 
                     }else {
-                        answerString = "A victory chain between " + questionTeam1 + " and " + questionTeam2 + " could not be determined.";
+			answerString = "There was an error calculating the advertiser desirability for these teams.";
                         response.setForeground(Color.RED);
                     }
                     saveString = answerString;
@@ -91,7 +91,15 @@ public class PanelQ5 extends JPanel implements Savable {
             }
         });
     }
-
+    /*
+     *Arguments:
+     *--team1: String of first team's name
+     *--team2: String of second team's name
+     *--stadium: String of stadium name
+     *Returns:
+     *--advertiserDesirability: double from 0 - 100 representing how desirable it would be to advertise for this hypothetical game
+	The metrics do not convey much on their own, but are good for comparing one game to another
+     */
     public String q5Function(String team1, String team2, String stadium){
         String ret = "";
         try {
@@ -114,14 +122,16 @@ public class PanelQ5 extends JPanel implements Savable {
 	 Integer stadiumCapacity = stadiumCapacity_table.getInteger(0,0);
 	
 	 //Value between 0 and 1
+	 //Evenness is twice the probability that the team favored to lose will win. This is close to 1 for games that are expected to be close
 	 double evenness = 2 * Math.min(GenerateElo.eloExpectation(team1Elo, team2Elo), GenerateElo.eloExpectation(team2Elo, team1Elo) );
 	 //Value between 0 and 1
-	 //Ratings *almost* never exceed 2000
-	 double quality = (team1Elo + team2Elo) / 4000.0;
-	 double subdivisionBonus = 0;
-	 if(team1FBS)
-	   subdivisionBonus += .5;
-	 if(team2FBS)
+	 //No ratings in dataset exceed 2000 and none are below 1000
+	 double quality = (team1Elo + team2Elo - 2000.0) / 2000.0;
+	 //Subdivision Bonus is .1 if neither team playing is an FBS team, .5 if one is, and 1 if they both are
+	 double subdivisionBonus = 0.1;
+	 if(team1FBS || team2FBS)
+	   subdivisionBonus += .4;
+	 if(team1FBS && team2FBS)
 	   subdivisionBonus += .5;
 	 //System.out.printf("Quality: %.2f\nEvenness: %.2f\nSubBonus: %.2f\nCap: %d", quality, evenness, subdivisionBonus, stadiumCapacity);
 	 double desirability = (evenness * quality * subdivisionBonus * stadiumCapacity) / 1000;
