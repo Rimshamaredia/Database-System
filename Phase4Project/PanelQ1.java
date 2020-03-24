@@ -91,27 +91,41 @@ public class PanelQ1 extends JPanel implements Savable {
                             + winning_code + ";");
             // store it in Queue
             Queue<Queue<Integer>> bfs = new LinkedList<>();
+
             //for storing the visited nodes
             HashSet<Integer> visited = new HashSet<Integer>();
+            
+            //initialize empty queue
             Queue<Integer> initQ = new LinkedList<>();
+
+            //add winning code to initQ Queue
             initQ.add(winning_code);
+
+            //add initQ Queue to bfs Queue
             bfs.add(initQ);
+
+            //add all visited codes to visited Queue
             visited.add(winning_code);
             while (!bfs.isEmpty()) {
+                //get top Queue
                 Queue<Integer> new_node = bfs.poll();
+
                 Integer team_code = ((LinkedList<Integer>) new_node).getLast();
                //get all the losing team names
                 ResultSet losing_teams = stmt.executeQuery(
                         "SELECT game_results_final.\"losing_team_code\", game_results_final.\"game_code\" FROM game_results_final WHERE game_results_final.\"winning_team_code\" ="
                                 + team_code + ";");
-               
+
+               // iterate over all the losing teams
                 while(losing_teams.next()) {
                     Integer losing_team = losing_teams.getInt(1);
+
+                    //get game code from the above query
                     Long game_code = losing_teams.getLong("game_code");
                 
                    // Integer game_code = (Integer)game_code;
                    
-                    
+                    //if reached the destination losing team , print the path and the date
                     if (losing_team.equals(losing_code)) {
                         for(int i = 0; i < new_node.size(); i++) {
                           
@@ -155,23 +169,30 @@ public class PanelQ1 extends JPanel implements Savable {
          LoginInfoDB.USERNAME, LoginInfoDB.PASSWORD);
          System.out.println("Finished attempting connecting to database");
          Statement stmt = conn.createStatement();
+
+         //assign winning team name
          String winning = team1;
+
+         //assign losing team name
          String losing = team2;
+
          // get the winning team code from name
          ResultSet winning_code_rt = stmt.executeQuery(
                  "SELECT merged_team.\"Team Code\" FROM merged_team WHERE merged_team.\"Name\"= '" + winning + "' ;");
-         // get the losing team code from name
+        
          winning_code_rt.next();
          Integer winning_code = winning_code_rt.getInt(1);
+
+          // get the losing team code from name
          ResultSet losing_code_rt = stmt.executeQuery(
                  "SELECT merged_team.\"Team Code\" FROM merged_team WHERE merged_team.\"Name\"= '" + losing + "' ;");
-      losing_code_rt.next();
+        losing_code_rt.next();
          Integer losing_code = losing_code_rt.getInt(1);
        
        
-  
+        //do bfs to search for losing code
         ret = bfs(winning_code, losing_code, conn);
-        //find if team has ever won against it
+     
          
       conn.close();
         
