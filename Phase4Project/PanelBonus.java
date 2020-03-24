@@ -77,7 +77,7 @@ public class PanelBonus extends JPanel implements Savable {
                     String answerString = "";
                     answerString = bonusFunction(questionPosition);
                     
-		    if (!answerString.equals(""){
+		    if (!answerString.equals("")){
                         response.setForeground(Color.decode("#2e994a"));
                     }
 		    else {
